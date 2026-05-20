@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Size Catcher — Real-time Resolution & Viewport Tracker</title>
+    <meta name="description" content="An elegant, real-time screen resolution and browser viewport dimension catcher. Instantly inspect, track, and copy your device and browser size metrics.">
+    <!-- Embedded Indigo Monitor Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='8' y1='21' x2='16' y2='21'%3E%3C/line%3E%3Cline x1='12' y1='17' x2='12' y2='21'%3E%3C/line%3E%3C/svg%3E">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Dynamic Background Glow Blobs -->
+    <div class="glow-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                <span>SizeCatcher</span>
+            </div>
+            <h1>Screen Size Catcher</h1>
+            <p class="subtitle">Real-time resolution and viewport metrics visualizer</p>
+        </header>
+
+        <main class="dashboard">
+            <!-- Box 1: Screen Resolution -->
+            <section class="card" id="card-screen">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="header-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        <h2>Total Screen Size</h2>
+                    </div>
+                    <span class="badge" id="screen-badge">Monitor Size</span>
+                </div>
+                
+                <div class="display-container">
+                    <div class="dimension-group">
+                        <div class="dimension-item">
+                            <span class="label">Width</span>
+                            <span class="value" id="screen-width">0</span>
+                            <span class="unit">px</span>
+                        </div>
+                        <div class="multiplier">×</div>
+                        <div class="dimension-item">
+                            <span class="label">Height</span>
+                            <span class="value" id="screen-height">0</span>
+                            <span class="unit">px</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-visual">
+                    <div class="ratio-box-outer">
+                        <div class="ratio-box-inner" id="screen-ratio-preview">
+                            <span class="ratio-text" id="screen-ratio-val">16:9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metadata-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Device Pixel Ratio (DPR)</span>
+                        <span class="meta-value" id="meta-screen-dpr">1.0x</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Color Depth</span>
+                        <span class="meta-value" id="meta-screen-depth">24-bit</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Orientation</span>
+                        <span class="meta-value" id="meta-screen-orientation">Landscape</span>
+                    </div>
+                </div>
+
+                <button class="btn-copy" id="btn-copy-screen" aria-label="Copy screen dimensions to clipboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy Screen Size</span>
+                </button>
+            </section>
+
+            <!-- Box 2: Browser Viewport -->
+            <section class="card active-card" id="card-browser">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="header-icon"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        <h2>Browser Window Size</h2>
+                    </div>
+                    <span class="badge badge-active" id="browser-badge">Resizing Tracker</span>
+                </div>
+                
+                <div class="display-container">
+                    <div class="dimension-group font-highlight">
+                        <div class="dimension-item">
+                            <span class="label">Width</span>
+                            <span class="value" id="browser-width">0</span>
+                            <span class="unit">px</span>
+                        </div>
+                        <div class="multiplier">×</div>
+                        <div class="dimension-item">
+                            <span class="label">Height</span>
+                            <span class="value" id="browser-height">0</span>
+                            <span class="unit">px</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-visual">
+                    <div class="ratio-box-outer">
+                        <div class="ratio-box-inner" id="browser-ratio-preview">
+                            <span class="ratio-text" id="browser-ratio-val">16:9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metadata-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Outer Window Width</span>
+                        <span class="meta-value" id="meta-outer-width">0px</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Outer Window Height</span>
+                        <span class="meta-value" id="meta-outer-height">0px</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Touch Interface</span>
+                        <span class="meta-value" id="meta-touch-supported">No</span>
+                    </div>
+                </div>
+
+                <button class="btn-copy" id="btn-copy-browser" aria-label="Copy browser dimensions to clipboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy Browser Size</span>
+                </button>
+            </section>
+        </main>
+
+        <footer>
+            <p>Made with ⚡ for quick screen size measurement</p>
+        </footer>
+    </div>
+
+    <!-- Notification system for Copy Feedback -->
+    <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <span>Dimensions copied!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
