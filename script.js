@@ -183,6 +183,38 @@ document.getElementById('btn-copy-browser').addEventListener('click', function()
 
 // Initialize on page load
 window.addEventListener('DOMContentLoaded', () => {
+    // Theme initialization
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', initialTheme);
+    updateThemeUI(initialTheme);
+
+    // Setup theme toggle UI
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const themeDropdown = document.getElementById('theme-dropdown');
+    const themeSwitcher = document.getElementById('theme-switcher');
+    themeToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        themeSwitcher.classList.toggle('open');
+    });
+    // Close dropdown on outside click
+    document.addEventListener('click', () => {
+        themeSwitcher.classList.remove('open');
+    });
+    // Theme option selection
+    document.querySelectorAll('.theme-option').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const selected = opt.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', selected);
+            localStorage.setItem('theme', selected);
+            updateThemeUI(selected);
+            themeSwitcher.classList.remove('open');
+        });
+    });
+
+    // Initialize screen and browser metrics
     updateScreenSize();
     updateBrowserSize();
     // Remove the initial resize flash immediately on load so it only flashes when dragged/resized
@@ -190,3 +222,17 @@ window.addEventListener('DOMContentLoaded', () => {
         browserCard.classList.remove('resize-flash');
     }, 400);
 });
+
+// Helper to update UI state of theme selector
+function updateThemeUI(theme) {
+    const label = document.getElementById('theme-label');
+    label.textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
+    // Update active class on options
+    document.querySelectorAll('.theme-option').forEach(opt => {
+        opt.classList.toggle('active', opt.getAttribute('data-theme') === theme);
+    });
+    // Update toggle button icon visibility
+    document.getElementById('theme-icon-dark').style.display = theme === 'dark' ? 'inline' : 'none';
+    document.getElementById('theme-icon-light').style.display = theme === 'light' ? 'inline' : 'none';
+    document.getElementById('theme-icon-default').style.display = theme === 'default' ? 'inline' : 'none';
+}
